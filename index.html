@@ -268,6 +268,7 @@ body.dark .dark-toggle:hover{background:rgba(255,255,255,0.08);}
     <p>Your learning hub for the Triangle Cyber internship. Enter your name to get started.</p>
     <input class="welcome-name-input" id="nameInput" type="text" placeholder="Enter your first name..." />
     <button class="welcome-btn" onclick="startJourney()">Enter CyberLab →</button>
+    <button class="welcome-btn" onclick="startJourney(true)" style="margin-top:10px;background:transparent;color:#5a7090;border:1.5px solid rgba(0,0,0,0.12);">Continue as Guest</button>
     <div class="welcome-steps">
       <div class="welcome-step"><div class="welcome-step-num">🛠️</div><div class="welcome-step-txt">Access Tools</div></div>
       <div class="welcome-step"><div class="welcome-step-num">📚</div><div class="welcome-step-txt">Learn Tracks</div></div>
@@ -596,8 +597,10 @@ body.dark .dark-toggle:hover{background:rgba(255,255,255,0.08);}
 const titles={tools:'All Tools',aws:'AWS Suite',splunk:'Splunk SIEM',crowdstrike:'CrowdStrike Falcon',tenable:'Tenable',planner:'Labs / Projects Board',learning:'Learning Tracks',reference:'Quick Reference'};
 const taskState={aws:[false,false,false,false,false],splunk:[false,false,false,false,false],cs:[false,false,false,false],tenable:[false,false,false,false]};
 
-function startJourney(){
-  const name=document.getElementById('nameInput').value.trim()||'Intern';
+function startJourney(asGuest){
+  let name;
+  if(asGuest===true){name='Guest';}
+  else{name=document.getElementById('nameInput').value.trim();if(!name){alert('Please enter your name, or click "Continue as Guest".');return;}}
   const initials=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('sidebarName').textContent=name;
   document.getElementById('sidebarAvatar').textContent=initials;
@@ -621,7 +624,7 @@ window.onload=function(){
   }
 };
 
-function showTool(id){
+function showTool(id,skipHistory){
   document.querySelectorAll('.tool-view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const v=document.getElementById('view-'+id);
@@ -630,7 +633,10 @@ function showTool(id){
   if(n)n.classList.add('active');
   document.getElementById('topbar-title').textContent=titles[id]||'CyberLab';
   hideMissions();
+  if(!skipHistory){if(location.hash!=='#'+id){history.pushState({tool:id},'','#'+id);}}
 }
+window.addEventListener('popstate',function(e){const id=(location.hash||'#tools').substring(1);showTool(id,true);});
+window.addEventListener('load',function(){if(location.hash){const id=location.hash.substring(1);showTool(id,true);}});
 
 function hideMissions(){
   ['aws-mission','splunk-mission','cs-mission','tenable-mission'].forEach(id=>{
@@ -733,4 +739,4 @@ if(localStorage.getItem('cyberlab_dark')==='true'){
 }
 </script>
 </body>
-</html>
+</html
