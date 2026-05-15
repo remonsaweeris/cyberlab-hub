@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberLab — Triangle Cyber</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' fill='%230f1e35'/%3E%3Cpath d='M 8 8 L 52 8 M 8 8 L 8 52' stroke='%23e63946' stroke-width='3' fill='none'/%3E%3Cpath d='M 13 13 L 52 13 M 13 13 L 13 52' stroke='%235e6dc7' stroke-width='2.5' fill='none'/%3E%3Ctext x='33' y='34' text-anchor='middle' fill='white' font-family='Arial' font-size='9' font-weight='bold'%3ETC%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#f0f4f8;color:#0f1e35;min-height:100vh;display:flex;}
+
+/* WELCOME OVERLAY */
+.welcome-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f1e35,#1a2d4a);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;}
+.welcome-overlay.hidden{display:none;}
+.welcome-box{background:#fff;border-radius:20px;padding:48px;max-width:480px;width:90%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.3);}
+.welcome-tc-logo{height:48px;margin-bottom:24px;}
+.welcome-box h1{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:8px;color:#0f1e35;}
+.welcome-box h1 span{color:#00c8d4;}
+.welcome-box p{font-size:14px;color:#5a7090;margin-bottom:28px;line-height:1.6;}
+.welcome-name-input{width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:16px;outline:none;transition:border 0.2s;}
+.welcome-name-input:focus{border-color:#00c8d4;}
+.welcome-btn{width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#0f1e35,#1a3a5a);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:opacity 0.2s;}
+.welcome-btn:hover{opacity:0.9;}
+.welcome-steps{display:flex;gap:12px;margin-top:24px;}
+.welcome-step{flex:1;padding:12px 8px;border-radius:10px;background:#f0f4f8;text-align:center;}
+.welcome-step-num{font-size:18px;margin-bottom:4px;}
+.welcome-step-txt{font-size:11px;font-weight:600;color:#5a7090;}
+
+/* APP LAYOUT */
+.app{display:flex;width:100%;min-height:100vh;}
+.sidebar{width:220px;min-width:220px;background:#0f1e35;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:18px 16px;border-bottom:1px solid rgba(255,255,255,0.07);cursor:pointer;text-decoration:none;}
+.sidebar-logo img.tc-logo{height:38px;width:auto;}
+.logo-fb{width:38px;height:38px;background:#c0392b;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:13px;color:#fff;flex-shrink:0;display:none;}
+.sidebar-logo-text{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;}
+.sidebar-logo-text span{color:#00c8d4;}
+
+/* INTERN BADGE in sidebar */
+.intern-badge{margin:12px;padding:10px 12px;background:rgba(0,200,212,0.08);border:1px solid rgba(0,200,212,0.2);border-radius:10px;display:flex;align-items:center;gap:8px;}
+.intern-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00c8d4,#4a7cf4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.intern-name{font-size:12px;font-weight:600;color:#fff;}
+.intern-role{font-size:10px;color:rgba(255,255,255,0.4);}
+
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:14px 16px 5px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;text-decoration:none;}
+.nav-item:hover{background:rgba(255,255,255,0.06);}
+.nav-item.active{background:rgba(255,255,255,0.08);border-left-color:var(--c,#00c8d4);}
+.nav-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.nav-icon img{width:100%;height:100%;object-fit:contain;}
+.nav-icon svg{width:18px;height:18px;}
+.nav-lbl{font-size:13px;font-weight:500;color:rgba(255,255,255,0.55);}
+.nav-item.active .nav-lbl{color:#fff;font-weight:600;}
+.divider{height:1px;background:rgba(255,255,255,0.07);margin:6px 0;}
+.sidebar-bottom{margin-top:auto;padding:14px;}
+.signout-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.signout-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{padding:12px 24px;border-bottom:1px solid rgba(0,0,0,0.08);background:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5;}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;}
+.news-ticker-wrap{display:flex;align-items:center;gap:10px;max-width:420px;overflow:hidden;}
+.news-label{font-size:9px;font-weight:700;letter-spacing:1px;color:#856404;white-space:nowrap;padding:3px 8px;border-radius:4px;background:#fff3cd;border:1px solid #ffc107;}
+.news-ticker{overflow:hidden;flex:1;}
+.news-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 22s linear infinite;font-size:12px;color:#5a7090;font-weight:500;}
+.news-inner span{flex-shrink:0;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* CONTENT */
+.content{padding:24px 26px;flex:1;overflow-y:auto;position:relative;}
+.content::before{content:'';position:fixed;top:0;left:220px;right:0;bottom:0;pointer-events:none;z-index:0;opacity:0.06;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ctext x='5' y='30' font-size='22' font-family='monospace' fill='%230f1e35' opacity='0.8'%3E01%3C/text%3E%3Ctext x='40' y='55' font-size='18' font-family='monospace' fill='%230f1e35' opacity='0.5'%3E10%3C/text%3E%3Ctext x='10' y='70' font-size='14' font-family='monospace' fill='%230f1e35' opacity='0.4'%3E11%3C/text%3E%3Ctext x='55' y='20' font-size='16' font-family='monospace' fill='%230f1e35' opacity='0.4'%3E00%3C/text%3E%3C/svg%3E");
+background-size:80px 80px;background-repeat:repeat;}
+.tool-view{display:none;position:relative;z-index:1;}
+.tool-view.active{display:block;}
+
+/* TOOL HEADER */
+.tool-hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.tool-ico{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:8px;}
+.tool-ico img{width:100%;height:100%;object-fit:contain;}
+.tool-ico svg{width:36px;height:36px;}
+.tool-hdr h2{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.tool-hdr p{font-size:12px;color:#5a7090;line-height:1.6;}
+.badge{display:inline-flex;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;}
+
+/* ACTION CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:24px;}
+.acard{background:#fff;border-radius:0 12px 12px 0;border:1px solid rgba(0,0,0,0.08);border-left-width:4px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;transition:all 0.2s;}
+.acard:hover{box-shadow:0 4px 14px rgba(0,0,0,0.07);transform:translateX(2px);}
+.acard-info h4{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;margin-bottom:3px;color:#0f1e35;}
+.acard-info p{font-size:11px;color:#8a9ab0;}
+.abtn{padding:7px 15px;border-radius:8px;border:none;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;text-decoration:none;display:inline-block;font-family:'Inter',sans-serif;}
+.abtn:hover{opacity:0.85;}
+.abtn-muted{background:rgba(0,0,0,0.06);color:#444;}
+
+/* MISSION CARD */
+.mission-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+.mission-header{padding:18px 20px;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;}
+.mission-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.mission-info{flex:1;}
+.mission-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px;}
+.mission-sub{font-size:12px;color:#5a7090;}
+.mission-progress{text-align:right;}
+.mission-pct{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#00a080;}
+.mission-pct-lbl{font-size:10px;color:#8a9ab0;}
+.mission-bar{height:4px;background:rgba(0,0,0,0.06);border-radius:10px;overflow:hidden;margin:0 20px 16px;}
+.mission-bar-fill{height:100%;border-radius:10px;transition:width 0.5s;}
+.mission-tasks{padding:4px 20px 16px;}
+.task-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.04);cursor:pointer;transition:background 0.15s;}
+.task-item:last-child{border-bottom:none;}
+.task-item:hover{background:rgba(0,0,0,0.01);margin:0 -20px;padding:10px 20px;}
+.task-check{width:20px;height:20px;border-radius:6px;border:2px solid rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.task-check.done{background:#00a080;border-color:#00a080;}
+.task-check.done::after{content:"✓";color:#fff;font-size:11px;font-weight:700;}
+.task-label{font-size:13px;color:#0f1e35;flex:1;}
+.task-item.completed .task-label{text-decoration:line-through;color:#8a9ab0;}
+.task-pts{font-size:10px;font-weight:600;color:#f5c842;background:rgba(245,200,66,0.1);padding:2px 7px;border-radius:10px;border:1px solid rgba(245,200,66,0.2);}
+.mission-badge{padding:12px 20px;background:rgba(0,200,150,0.04);border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;}
+.badge-locked{font-size:28px;filter:grayscale(1);opacity:0.3;}
+.badge-earned{font-size:28px;}
+.badge-info{flex:1;}
+.badge-info h4{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;margin-bottom:2px;}
+.badge-info p{font-size:11px;color:#5a7090;}
+.next-track{padding:12px 20px;background:#f8fafc;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;}
+.next-track-txt{font-size:12px;color:#5a7090;}
+.next-track-btn{font-size:11px;font-weight:600;color:#4a7cf4;cursor:pointer;background:none;border:none;padding:0;}
+
+/* AI ASSISTANT */
+.ai-fab{position:fixed;bottom:24px;right:24px;z-index:50;}
+.ai-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0f1e35,#1a3a5a);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 20px rgba(0,0,0,0.25);transition:transform 0.2s;}
+.ai-btn:hover{transform:scale(1.08);}
+.ai-panel{position:fixed;bottom:90px;right:24px;width:340px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.18);border:1px solid rgba(0,0,0,0.08);display:none;flex-direction:column;z-index:50;overflow:hidden;max-height:480px;}
+.ai-panel.open{display:flex;}
+.ai-panel-header{padding:14px 16px;background:#0f1e35;display:flex;align-items:center;gap:10px;}
+.ai-panel-header h3{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;flex:1;}
+.ai-close{background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+.ai-close:hover{color:#fff;}
+.ai-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:200px;}
+.ai-msg{max-width:85%;padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.5;}
+.ai-msg.user{background:#0f1e35;color:#fff;align-self:flex-end;border-radius:10px 10px 2px 10px;}
+.ai-msg.bot{background:#f0f4f8;color:#0f1e35;align-self:flex-start;border-radius:10px 10px 10px 2px;}
+.ai-msg.typing{color:#8a9ab0;font-style:italic;}
+.ai-suggestions{padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px;}
+.ai-sug{padding:4px 10px;border-radius:20px;background:#f0f4f8;border:1px solid rgba(0,0,0,0.08);font-size:11px;color:#0f1e35;cursor:pointer;transition:all 0.15s;}
+.ai-sug:hover{background:#e0e8f0;border-color:rgba(0,0,0,0.15);}
+.ai-input-row{padding:10px 14px;border-top:1px solid rgba(0,0,0,0.07);display:flex;gap:8px;}
+.ai-input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid rgba(0,0,0,0.12);font-size:12px;font-family:'Inter',sans-serif;outline:none;}
+.ai-input:focus{border-color:#00c8d4;}
+.ai-send{padding:8px 14px;border-radius:8px;border:none;background:#0f1e35;color:#fff;font-size:12px;font-weight:600;cursor:pointer;}
+.ai-send:hover{opacity:0.9;}
+
+/* LEARNING TRACKS PAGE */
+.tracks-section-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#0f1e35;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.tracks-section-title span{font-size:11px;font-weight:500;color:#5a7090;}
+.tracks-overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px;}
+.tov-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.2s;position:relative;}
+.tov-card:hover{box-shadow:0 4px 14px rgba(0,0,0,0.08);transform:translateY(-2px);}
+.tov-em{font-size:28px;margin-bottom:10px;}
+.tov-name{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;margin-bottom:6px;}
+.tov-pbar{height:3px;background:rgba(0,0,0,0.06);border-radius:10px;overflow:hidden;margin-bottom:6px;}
+.tov-pfill{height:100%;border-radius:10px;}
+.tov-pct{font-size:11px;color:#8a9ab0;}
+.tov-status{position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;}
+
+/* DARK MODE */
+body.dark{--bg:#0f1e35;--card:#131f30;--border:rgba(255,255,255,0.07);--text:#e8f0f8;--muted:#6b85a8;--input-bg:#1a2d4a;--topbar:#0d1a2e;}
+body.dark .main{background:#0f1e35;}
+body.dark .topbar{background:var(--topbar,#0d1a2e);border-color:rgba(255,255,255,0.07);}
+body.dark .topbar-title{color:#e8f0f8;}
+body.dark .content{background:#0f1e35;}
+body.dark .content::before{opacity:0.04;}
+body.dark .acard{background:#131f30;border-color:rgba(255,255,255,0.07);color:#e8f0f8;}
+body.dark .acard-info h4{color:#e8f0f8;}
+body.dark .acard-info p{color:#6b85a8;}
+body.dark .acard:hover{box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+body.dark .mission-card{background:#131f30;border-color:rgba(255,255,255,0.07);}
+body.dark .mission-header{border-color:rgba(255,255,255,0.07);}
+body.dark .mission-title{color:#e8f0f8;}
+body.dark .mission-sub{color:#6b85a8;}
+body.dark .mission-bar{background:rgba(255,255,255,0.06);}
+body.dark .task-item{border-color:rgba(255,255,255,0.04);}
+body.dark .task-label{color:#e8f0f8;}
+body.dark .task-item.completed .task-label{color:#6b85a8;}
+body.dark .task-check{border-color:rgba(255,255,255,0.2);}
+body.dark .mission-badge{background:rgba(0,200,150,0.05);border-color:rgba(255,255,255,0.07);}
+body.dark .badge-info h4{color:#e8f0f8;}
+body.dark .badge-info p{color:#6b85a8;}
+body.dark .next-track{background:#0f1a2a;border-color:rgba(255,255,255,0.07);}
+body.dark .next-track-txt{color:#6b85a8;}
+body.dark .tov-card{background:#131f30;border-color:rgba(255,255,255,0.07);color:#e8f0f8;}
+body.dark .tov-card:hover{box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+body.dark .tov-name{color:#e8f0f8;}
+body.dark .tov-pct{color:#6b85a8;}
+body.dark .tov-pbar{background:rgba(255,255,255,0.06);}
+body.dark .tracks-section-title{color:#e8f0f8;}
+body.dark .tracks-section-title span{color:#6b85a8;}
+body.dark .tool-hdr h2{color:#e8f0f8;}
+body.dark .tool-hdr p{color:#6b85a8;}
+body.dark .ai-panel{background:#131f30;border-color:rgba(255,255,255,0.07);}
+body.dark .ai-msg.bot{background:#1a2d4a;color:#e8f0f8;}
+body.dark .ai-input{background:#1a2d4a;border-color:rgba(255,255,255,0.1);color:#e8f0f8;}
+body.dark .ai-suggestions .ai-sug{background:#1a2d4a;border-color:rgba(255,255,255,0.08);color:#e8f0f8;}
+body.dark .ai-input-row{border-color:rgba(255,255,255,0.07);}
+body.dark .ref-card{background:#131f30;border-color:rgba(255,255,255,0.07);}
+body.dark .ref-title{color:#e8f0f8;}
+body.dark .ref-cmd{background:#0a1520;border-color:rgba(255,255,255,0.07);color:#e8f0f8;}
+body.dark .ref-cmd code{color:#00c8d4;}
+body.dark .ref-cmd p{color:#6b85a8;}
+body.dark .tip-card{background:#131f30;border-color:rgba(255,255,255,0.07);}
+body.dark .tip-text{color:#e8f0f8;}
+body.dark .abtn-muted{background:rgba(255,255,255,0.08);color:#e8f0f8;}
+body.dark .news-label{background:rgba(133,100,4,0.3);border-color:#8a6400;}
+
+/* DARK MODE TOGGLE BTN */
+.dark-toggle{padding:6px 12px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:transparent;font-size:13px;cursor:pointer;transition:all 0.2s;color:#5a7090;}
+body.dark .dark-toggle{border-color:rgba(255,255,255,0.15);color:#e8f0f8;}
+.dark-toggle:hover{background:rgba(0,0,0,0.05);}
+body.dark .dark-toggle:hover{background:rgba(255,255,255,0.08);}
+
+/* MOBILE */
+@media(max-width:768px){
+  .app{flex-direction:column;}
+  .sidebar{width:100%;min-width:unset;height:auto;flex-direction:row;flex-wrap:wrap;padding:8px;position:relative;}
+  .sidebar-logo{padding:8px 12px;border-bottom:none;border-right:1px solid rgba(255,255,255,0.07);}
+  .intern-badge{margin:4px;padding:6px 10px;}
+  .sec-lbl{display:none;}
+  .nav-item{padding:6px 10px;border-left:none;border-bottom:3px solid transparent;}
+  .nav-item.active{border-left:none;border-bottom-color:var(--c,#00c8d4);}
+  .nav-lbl{font-size:11px;}
+  .sidebar-bottom{padding:4px 8px;margin-top:0;}
+  .main{min-height:calc(100vh - 100px);}
+  .topbar{padding:10px 14px;flex-wrap:wrap;gap:8px;}
+  .news-ticker-wrap{max-width:100%;order:2;width:100%;}
+  .content{padding:14px;}
+  .grid{grid-template-columns:1fr;}
+  .tracks-overview{grid-template-columns:repeat(2,1fr);}
+  .welcome-box{padding:28px 20px;}
+  .welcome-box h1{font-size:22px;}
+}
+
+/* QUICK REFERENCE */
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px;}
+.ref-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;overflow:hidden;}
+.ref-card-header{padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;}
+.ref-card-header h3{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;}
+.ref-cmd{padding:10px 16px;border-bottom:1px solid rgba(0,0,0,0.05);display:flex;flex-direction:column;gap:3px;}
+.ref-cmd:last-child{border-bottom:none;}
+.ref-cmd code{font-size:12px;font-family:monospace;color:#0f1e35;background:rgba(0,0,0,0.04);padding:3px 7px;border-radius:5px;display:inline-block;}
+.ref-cmd p{font-size:11px;color:#8a9ab0;margin-top:2px;}
+
+/* TIPS */
+.tip-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:14px;}
+.tip-icon{font-size:28px;flex-shrink:0;}
+.tip-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#00a080;margin-bottom:5px;}
+.tip-text{font-size:13px;color:#0f1e35;line-height:1.6;}
+.tip-date{font-size:11px;color:#8a9ab0;margin-top:4px;}
+
+/* ROLE-BASED RESTRICTIONS */
+.guide-locked-msg{display:none;padding:7px 15px;border-radius:8px;background:rgba(0,0,0,0.05);color:#5a7090;font-size:11px;font-weight:600;border:1px solid rgba(0,0,0,0.08);}
+body.role-guest .guide-download-link{display:none !important;}
+body.role-guest .guide-locked-msg{display:inline-block !important;}
+.guest-locked-overlay{display:none;padding:40px 24px;text-align:center;background:rgba(0,0,0,0.02);border:1px dashed rgba(0,0,0,0.15);border-radius:14px;margin:20px 0;}
+.guest-locked-overlay h3{font-family:'Space Grotesk',sans-serif;font-size:18px;margin-bottom:8px;color:#0f1e35;}
+.guest-locked-overlay p{font-size:13px;color:#5a7090;margin-bottom:14px;}
+.guest-locked-btn{padding:9px 20px;border:none;background:linear-gradient(135deg,#0f1e35,#1a3a5a);color:#fff;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+body.role-guest .restricted-content{display:none !important;}
+body.role-guest .guest-locked-overlay{display:block !important;}
+body.dark .guide-locked-msg{background:rgba(255,255,255,0.06);color:#9bb0c8;border-color:rgba(255,255,255,0.08);}
+body.dark .guest-locked-overlay{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.15);}
+body.dark .guest-locked-overlay h3{color:#e8f0f8;}
+body.dark .guest-locked-overlay p{color:#9bb0c8;}
+.news-inner a:hover{text-decoration:underline !important;color:#0a4ea0 !important;}
+</style>
+</head>
+<body>
+
+<!-- WELCOME OVERLAY -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-box">
+
+    <h1>Welcome to <span>CyberLab</span> 👋</h1>
+    <p>Your learning hub for the Triangle Cyber internship. Enter your name to get started.</p>
+    <input class="welcome-name-input" id="nameInput" type="text" placeholder="First name (optional)" />
+    <input class="welcome-name-input" id="emailInput" type="email" placeholder="Your @trianglecyber.net email" style="margin-top:10px;" />
+    <div id="loginError" style="display:none;color:#c0392b;font-size:12px;margin-top:6px;text-align:left;"></div>
+    <button class="welcome-btn" onclick="startJourney()" style="margin-top:14px;">Enter CyberLab →</button>
+    <button class="welcome-btn" onclick="startJourney(true)" style="margin-top:10px;background:transparent;color:#5a7090;border:1.5px solid rgba(0,0,0,0.12);">Continue as Guest (limited)</button>
+    <div class="welcome-steps">
+      <div class="welcome-step"><div class="welcome-step-num">🛠️</div><div class="welcome-step-txt">Access Tools</div></div>
+      <div class="welcome-step"><div class="welcome-step-num">📚</div><div class="welcome-step-txt">Learn Tracks</div></div>
+      <div class="welcome-step"><div class="welcome-step-num">🏅</div><div class="welcome-step-txt">Earn Badges</div></div>
+      <div class="welcome-step"><div class="welcome-step-num">🤖</div><div class="welcome-step-txt">AI Help</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <a class="sidebar-logo" href="#" onclick="showTool('tools');return false;">
+
+    <span class="sidebar-logo-text">Cyber<span>Lab</span></span>
+  </a>
+
+  <div class="intern-badge">
+    <div class="intern-avatar" id="sidebarAvatar">?</div>
+    <div>
+      <div class="intern-name" id="sidebarName">Intern</div>
+      <div class="intern-role">CyberLab Intern</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">CyberLab Tools</div>
+  <a class="nav-item active" onclick="showTool('tools');return false;" href="#" style="--c:#00c8d4;">
+    <div class="nav-icon" style="background:rgba(0,200,212,0.15);">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#00c8d4" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#00c8d4" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#00c8d4" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="#00c8d4" stroke-width="2"/></svg>
+    </div>
+    <span class="nav-lbl">All Tools</span>
+  </a>
+  <a class="nav-item" onclick="showTool('planner');return false;" href="#" style="--c:#f5c842;">
+    <div class="nav-icon" style="background:rgba(245,200,66,0.15);">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#f5c842" stroke-width="2"/><path d="M3 9h18M8 4v5M16 4v5" stroke="#f5c842" stroke-width="1.8" stroke-linecap="round"/><path d="M7 13h4M7 17h8" stroke="#f5c842" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-lbl">Labs / Projects</span>
+  </a>
+
+  <div class="divider"></div>
+  <div class="sec-lbl">Learning</div>
+  <a class="nav-item" onclick="showTool('learning');return false;" href="#" style="--c:#00c896;">
+    <div class="nav-icon" style="background:rgba(0,200,150,0.12);">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M2 8l10-5 10 5-10 5-10-5zM2 16l10 5 10-5M2 12l10 5 10-5" stroke="#00c896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="nav-lbl">Learning Tracks</span>
+  </a>
+
+  <a class="nav-item" onclick="showTool('reference');return false;" href="#" style="--c:#f5c842;">
+    <div class="nav-icon" style="background:rgba(245,200,66,0.12);">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/><path d="M9 12h6M9 16h4" stroke="#f5c842" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-lbl">Quick Reference</span>
+  </a>
+  <div class="sidebar-bottom">
+    <button class="signout-btn" onclick="signOut()">👋 Sign Out</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">All Tools</div>
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙 Dark</button>
+    <div class="news-ticker-wrap">
+      <span class="news-label">⚡ NEWS</span>
+      <div class="news-ticker">
+        <div class="news-inner" id="newsTickerInner"><span id="newsContent">Loading latest cybersecurity news...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ALL TOOLS -->
+    <div class="tool-view active" id="view-tools">
+      <!-- TIP OF THE DAY -->
+      <div class="tip-card">
+        <div class="tip-icon">💡</div>
+        <div>
+          <div class="tip-label">Tip of the Day — AWS Cost Tip</div>
+          <div class="tip-text">Always stop your EC2 instance when you're done for the day to keep AWS costs low.</div>
+          <div class="tip-date">May 14, 2026</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="acard" style="border-left-color:#ff9900;">
+          <div class="acard-info"><h4>AWS Suite</h4></div>
+          <button onclick="showTool('aws')" class="abtn" style="background:#ff9900;color:#0a0a0a;">Open →</button>
+        </div>
+        <div class="acard" style="border-left-color:#00c896;">
+          <div class="acard-info"><h4>Splunk SIEM</h4></div>
+          <button onclick="showTool('splunk')" class="abtn" style="background:#00c896;color:#0a0a0a;">Open →</button>
+        </div>
+        <div class="acard" style="border-left-color:#e03030;">
+          <div class="acard-info"><h4>CrowdStrike Falcon</h4></div>
+          <button onclick="showTool('crowdstrike')" class="abtn" style="background:#e03030;color:#fff;">Open →</button>
+        </div>
+        <div class="acard" style="border-left-color:#4a7cf4;">
+          <div class="acard-info"><h4>Tenable</h4></div>
+          <button onclick="showTool('tenable')" class="abtn" style="background:#4a7cf4;color:#fff;">Open →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AWS -->
+    <div class="tool-view" id="view-aws">
+      <div class="tool-hdr">
+        <div class="tool-ico" style="background:rgba(255,153,0,0.08);"><img src="data:image/png;base64,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" alt="AWS"></div>
+        <div><h2>AWS Suite <span class="badge" style="background:rgba(245,200,66,0.12);color:#9a7000;border:1px solid rgba(245,200,66,0.3);">Infrastructure</span></h2><p>Launch and manage EC2, S3, VPCs and cloud infrastructure. Always stop instances when not in use.</p></div>
+      </div>
+      <div class="grid">
+        <div class="acard" style="border-left-color:#ff9900;"><div class="acard-info"><h4>AWS Console</h4><p>EC2 · S3 · VPC · Lambda</p></div><a href="https://console.aws.amazon.com" target="_blank" class="abtn" style="background:#ff9900;color:#0a0a0a;">Open →</a></div>
+        <div class="acard" style="border-left-color:#ff9900;"><div class="acard-info"><h4>AWS EC2 Setup Guide</h4><p>Intern setup guide · .docx</p></div><a href="https://docs.google.com/viewer?url=https://main.d1vp5vdfo7hqet.amplifyapp.com/aws_guide.docx&embedded=true" target="_blank" class="abtn guide-download-link" style="background:#ff9900;color:#0a0a0a;margin-right:6px;">👁️ View</a><a href="aws_guide.docx" class="abtn abtn-muted guide-download-link">📥 Download</a><span class="guide-locked-msg">&#x1F512; Sign in with TC email to access</span></div>
+      </div>
+    </div>
+
+    <!-- SPLUNK -->
+    <div class="tool-view" id="view-splunk">
+      <div class="tool-hdr">
+        <div class="tool-ico" style="background:#0a0a0a;"><img src="data:image/png;base64,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" alt="Splunk"></div>
+        <div><h2>Splunk SIEM <span class="badge" style="background:rgba(0,200,150,0.1);color:#007a60;border:1px solid rgba(0,200,150,0.3);">SIEM</span></h2><p>TC's centralized log aggregation platform. Use your TC SIEM login — separate from Splunk.com.</p></div>
+      </div>
+      <div class="grid">
+        <div class="acard" style="border-left-color:#00c896;"><div class="acard-info"><h4>Splunk SIEM</h4><p>splunksiem.bluewave-redbird.com</p></div><a href="https://splunksiem.bluewave-redbird.com" target="_blank" class="abtn" style="background:#00c896;color:#0a0a0a;">Open →</a></div>
+        <div class="acard" style="border-left-color:#00c896;"><div class="acard-info"><h4>Splunk UF Setup Guide v10.2.3</h4><p>Universal Forwarder guide · .docx</p></div><a href="https://docs.google.com/viewer?url=https://main.d1vp5vdfo7hqet.amplifyapp.com/Splunk_Setup_Guide.docx&embedded=true" target="_blank" class="abtn guide-download-link" style="background:#00c896;color:#0a0a0a;margin-right:6px;">👁️ View</a><a href="Splunk_Setup_Guide.docx" class="abtn abtn-muted guide-download-link">📥 Download</a><span class="guide-locked-msg">&#x1F512; Sign in with TC email to access</span></div>
+      </div>
+    </div>
+
+    <!-- CROWDSTRIKE -->
+    <div class="tool-view" id="view-crowdstrike">
+      <div class="tool-hdr">
+        <div class="tool-ico" style="background:#1a1a1a;"><img src="data:image/png;base64,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" alt="CrowdStrike"></div>
+        <div><h2>CrowdStrike Falcon <span class="badge" style="background:rgba(220,48,48,0.1);color:#a02020;border:1px solid rgba(220,48,48,0.3);">EDR</span></h2><p>Endpoint Detection & Response. Install the Falcon sensor on your EC2 and monitor from the dashboard.</p></div>
+      </div>
+      <div class="grid">
+        <div class="acard" style="border-left-color:#e03030;"><div class="acard-info"><h4>Falcon Dashboard</h4><p>falcon.crowdstrike.com</p></div><a href="https://falcon.crowdstrike.com" target="_blank" class="abtn" style="background:#e03030;color:#fff;">Open →</a></div>
+        <div class="acard" style="border-left-color:#e03030;"><div class="acard-info"><h4>CrowdStrike Falcon Setup Guide</h4><p>Sensor installation guide · .docx</p></div><a href="https://docs.google.com/viewer?url=https://main.d1vp5vdfo7hqet.amplifyapp.com/crowdstrike_guide.docx&embedded=true" target="_blank" class="abtn guide-download-link" style="background:#e03030;color:#fff;margin-right:6px;">👁️ View</a><a href="crowdstrike_guide.docx" class="abtn abtn-muted guide-download-link">📥 Download</a><span class="guide-locked-msg">&#x1F512; Sign in with TC email to access</span></div>
+      </div>
+    </div>
+
+    <!-- TENABLE -->
+    <div class="tool-view" id="view-tenable">
+      <div class="tool-hdr">
+        <div class="tool-ico" style="background:#fff;border:1px solid rgba(0,0,0,0.08);"><img src="data:image/png;base64,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" alt="Tenable"></div>
+        <div><h2>Tenable <span class="badge" style="background:rgba(74,124,244,0.1);color:#2a5cb4;border:1px solid rgba(74,124,244,0.3);">Vulnerability Mgmt</span></h2><p>Vulnerability scanning and management. Log in via MSSP portal — not directly via cloud.tenable.com.</p></div>
+      </div>
+      <div class="grid">
+        <div class="acard" style="border-left-color:#4a7cf4;"><div class="acard-info"><h4>Tenable Dashboard</h4><p>cloud.tenable.com</p></div><a href="https://cloud.tenable.com" target="_blank" class="abtn" style="background:#4a7cf4;color:#fff;">Open →</a></div>
+        <div class="acard" style="border-left-color:#4a7cf4;"><div class="acard-info"><h4>Tenable Setup Guide</h4><p>Vulnerability management guide · .docx</p></div><a href="https://docs.google.com/viewer?url=https://main.d1vp5vdfo7hqet.amplifyapp.com/tenable_guide.docx&embedded=true" target="_blank" class="abtn guide-download-link" style="background:#4a7cf4;color:#fff;margin-right:6px;">👁️ View</a><a href="tenable_guide.docx" class="abtn abtn-muted guide-download-link">📥 Download</a><span class="guide-locked-msg">&#x1F512; Sign in with TC email to access</span></div>
+      </div>
+    </div>
+
+    <!-- PLANNER -->
+    <div class="tool-view" id="view-planner">
+  <div class="tool-hdr">
+    <div class="tool-ico" style="background:rgba(245,200,66,0.1);">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#f5c842" stroke-width="2"/><path d="M3 9h18M8 4v5M16 4v5" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h2>Current Sprint <span class="badge" style="background:rgba(245,200,66,0.12);color:#9a7000;border:1px solid rgba(245,200,66,0.3);">My Projects</span></h2>
+      <p>Active projects, tasks in progress, and what's next on your plate this internship.</p>
+    </div>
+  </div>
+
+  <!-- SPRINT SUMMARY -->
+  <div class="ref-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+    <div class="acard" style="border-left-color:#00c896;display:block;text-align:center;padding:18px 12px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:#00c896;">3</div>
+      <div style="font-size:11px;color:#5a7090;text-transform:uppercase;letter-spacing:1px;">In Progress</div>
+    </div>
+    <div class="acard" style="border-left-color:#4a7cf4;display:block;text-align:center;padding:18px 12px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:#4a7cf4;">5</div>
+      <div style="font-size:11px;color:#5a7090;text-transform:uppercase;letter-spacing:1px;">Completed</div>
+    </div>
+    <div class="acard" style="border-left-color:#f5c842;display:block;text-align:center;padding:18px 12px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:#f5c842;">2</div>
+      <div style="font-size:11px;color:#5a7090;text-transform:uppercase;letter-spacing:1px;">Up Next</div>
+    </div>
+  </div>
+
+  <!-- IN PROGRESS PROJECTS -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin:24px 0 12px;display:flex;align-items:center;gap:8px;color:#0f1e35;">
+    <span style="width:10px;height:10px;border-radius:50%;background:#00c896;display:inline-block;"></span> In Progress
+  </h3>
+  <div class="ref-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
+
+    <div class="ref-card" style="border-left:4px solid #00c896;">
+      <div class="ref-card-header" style="background:rgba(0,200,150,0.05);justify-content:space-between;">
+        <h3>CyberLab Hub Website</h3>
+        <span class="badge" style="background:rgba(0,200,150,0.15);color:#00a080;">75%</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <p style="font-size:12px;color:#5a7090;margin-bottom:10px;">Live intern hub deployed on AWS Amplify with embedded setup guides.</p>
+        <div style="height:5px;background:rgba(0,0,0,0.05);border-radius:10px;overflow:hidden;margin-bottom:10px;">
+          <div style="width:75%;height:100%;background:#00c896;border-radius:10px;"></div>
+        </div>
+        <div style="font-size:11px;color:#8a9ab0;">Next: Triangle Cyber logo, AI chatbot</div>
+      </div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #00c896;">
+      <div class="ref-card-header" style="background:rgba(0,200,150,0.05);justify-content:space-between;">
+        <h3>EC2 Lab Environment</h3>
+        <span class="badge" style="background:rgba(0,200,150,0.15);color:#00a080;">90%</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <p style="font-size:12px;color:#5a7090;margin-bottom:10px;">remon-test instance with CrowdStrike Falcon + Tenable Nessus + Splunk UF installed.</p>
+        <div style="height:5px;background:rgba(0,0,0,0.05);border-radius:10px;overflow:hidden;margin-bottom:10px;">
+          <div style="width:90%;height:100%;background:#00c896;border-radius:10px;"></div>
+        </div>
+        <div style="font-size:11px;color:#8a9ab0;">Next: Verify all sensors reporting</div>
+      </div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #00c896;">
+      <div class="ref-card-header" style="background:rgba(0,200,150,0.05);justify-content:space-between;">
+        <h3>Splunk UF Documentation</h3>
+        <span class="badge" style="background:rgba(0,200,150,0.15);color:#00a080;">85%</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <p style="font-size:12px;color:#5a7090;margin-bottom:10px;">Universal Forwarder setup guide for TC EC2 instances (v10.2.3).</p>
+        <div style="height:5px;background:rgba(0,0,0,0.05);border-radius:10px;overflow:hidden;margin-bottom:10px;">
+          <div style="width:85%;height:100%;background:#00c896;border-radius:10px;"></div>
+        </div>
+        <div style="font-size:11px;color:#8a9ab0;">Next: Final review with Will</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- UP NEXT -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin:24px 0 12px;display:flex;align-items:center;gap:8px;color:#0f1e35;">
+    <span style="width:10px;height:10px;border-radius:50%;background:#f5c842;display:inline-block;"></span> Up Next
+  </h3>
+  <div class="ref-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
+
+    <div class="ref-card" style="border-left:4px solid #f5c842;">
+      <div class="ref-card-header" style="background:rgba(245,200,66,0.05);">
+        <h3>AWS EC2 Setup Guide</h3>
+      </div>
+      <div style="padding:12px 16px;">
+        <p style="font-size:12px;color:#5a7090;margin-bottom:10px;">Dedicated guide for spinning up EC2 instances on AWS for new interns.</p>
+        <div style="font-size:11px;color:#8a9ab0;">Target: This sprint</div>
+      </div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #f5c842;">
+      <div class="ref-card-header" style="background:rgba(245,200,66,0.05);">
+        <h3>AI Chatbot Integration</h3>
+      </div>
+      <div style="padding:12px 16px;">
+        <p style="font-size:12px;color:#5a7090;margin-bottom:10px;">Pending data policy approval. Will use Chatbase trained on TC guides.</p>
+        <div style="font-size:11px;color:#8a9ab0;">Blocked: Waiting on Will</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPLETED -->
+  <h3 style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin:24px 0 12px;display:flex;align-items:center;gap:8px;color:#0f1e35;">
+    <span style="width:10px;height:10px;border-radius:50%;background:#4a7cf4;display:inline-block;"></span> Completed
+  </h3>
+  <div class="ref-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
+
+    <div class="ref-card" style="border-left:4px solid #4a7cf4;opacity:0.85;">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.05);justify-content:space-between;">
+        <h3>Tenable Nessus Agent Setup Guide</h3>
+        <span class="badge" style="background:rgba(74,124,244,0.15);color:#2a5cb4;">DONE</span>
+      </div>
+      <div style="padding:12px 16px;"><p style="font-size:12px;color:#5a7090;">Step-by-step intern guide for installing the Nessus Agent on EC2.</p></div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #4a7cf4;opacity:0.85;">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.05);justify-content:space-between;">
+        <h3>CrowdStrike Falcon Sensor Setup Guide</h3>
+        <span class="badge" style="background:rgba(74,124,244,0.15);color:#2a5cb4;">DONE</span>
+      </div>
+      <div style="padding:12px 16px;"><p style="font-size:12px;color:#5a7090;">Approved by Will. Includes sensor compatibility table and FAQ.</p></div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #4a7cf4;opacity:0.85;">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.05);justify-content:space-between;">
+        <h3>Tenable SSO/SAML Enforcement</h3>
+        <span class="badge" style="background:rgba(74,124,244,0.15);color:#2a5cb4;">DONE</span>
+      </div>
+      <div style="padding:12px 16px;"><p style="font-size:12px;color:#5a7090;">Resolved account lockout issue by enforcing SSO via MSSP portal.</p></div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #4a7cf4;opacity:0.85;">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.05);justify-content:space-between;">
+        <h3>Tenable WAS Scans</h3>
+        <span class="badge" style="background:rgba(74,124,244,0.15);color:#2a5cb4;">DONE</span>
+      </div>
+      <div style="padding:12px 16px;"><p style="font-size:12px;color:#5a7090;">Web App Scans on trianglecyber.net + xlabs-drones.com.</p></div>
+    </div>
+
+    <div class="ref-card" style="border-left:4px solid #4a7cf4;opacity:0.85;">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.05);justify-content:space-between;">
+        <h3>Weekly Report - Slide 17 (CyberLab)</h3>
+        <span class="badge" style="background:rgba(74,124,244,0.15);color:#2a5cb4;">DONE</span>
+      </div>
+      <div style="padding:12px 16px;"><p style="font-size:12px;color:#5a7090;">Added CyberLab Hub section to weekly IT/Cyber report.</p></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="tool-view" id="view-reference">
+  <div class="tool-hdr">
+    <div class="tool-ico" style="background:rgba(245,200,66,0.1);">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h2>Quick Reference <span class="badge" style="background:rgba(245,200,66,0.12);color:#9a7000;border:1px solid rgba(245,200,66,0.3);">Cheat Sheet</span></h2>
+      <p>Commands, shortcuts, and links you'll use often during your TC internship.</p>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">&#x1F4A1;</div>
+    <div>
+      <div class="tip-label">PRO TIP</div>
+      <div class="tip-text">Bookmark this page. Stop EC2 instances when not in use to save costs. Always login to Tenable through the MSSP portal.</div>
+    </div>
+  </div>
+
+  <div class="ref-grid">
+
+    <!-- AWS COMMANDS -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(255,153,0,0.06);">
+        <h3 style="color:#ff9900;">&#x2601;&#xFE0F; AWS CLI</h3>
+      </div>
+      <div class="ref-cmd"><code>aws ec2 describe-instances</code><p>List all EC2 instances</p></div>
+      <div class="ref-cmd"><code>aws ec2 stop-instances --instance-ids i-xxxx</code><p>Stop an instance to save costs</p></div>
+      <div class="ref-cmd"><code>aws ec2 start-instances --instance-ids i-xxxx</code><p>Start a stopped instance</p></div>
+      <div class="ref-cmd"><code>aws s3 ls</code><p>List S3 buckets</p></div>
+      <div class="ref-cmd"><code>aws sts get-caller-identity</code><p>Verify which AWS account/role you are using</p></div>
+    </div>
+
+    <!-- SSH / EC2 CONNECTION -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.06);">
+        <h3 style="color:#4a7cf4;">&#x1F511; SSH / EC2 Connect</h3>
+      </div>
+      <div class="ref-cmd"><code>ssh -i key.pem ec2-user@&lt;public-ip&gt;</code><p>Connect to Amazon Linux instance</p></div>
+      <div class="ref-cmd"><code>ssh -i key.pem ubuntu@&lt;public-ip&gt;</code><p>Connect to Ubuntu instance</p></div>
+      <div class="ref-cmd"><code>chmod 400 key.pem</code><p>Fix key permissions (required before SSH)</p></div>
+      <div class="ref-cmd"><code>scp -i key.pem file.txt ec2-user@ip:~/</code><p>Copy file to remote EC2</p></div>
+    </div>
+
+    <!-- SPLUNK SEARCH -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(0,200,150,0.06);">
+        <h3 style="color:#00a080;">&#x1F4CA; Splunk Search</h3>
+      </div>
+      <div class="ref-cmd"><code>index=main | head 20</code><p>Show first 20 events</p></div>
+      <div class="ref-cmd"><code>index=main host=apache-1</code><p>Filter by host</p></div>
+      <div class="ref-cmd"><code>index=* sourcetype=linux_secure failed</code><p>Find failed Linux logins</p></div>
+      <div class="ref-cmd"><code>| stats count by host</code><p>Count events grouped by host</p></div>
+      <div class="ref-cmd"><code>earliest=-24h@h</code><p>Filter to last 24 hours</p></div>
+    </div>
+
+    <!-- CROWDSTRIKE -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(220,48,48,0.06);">
+        <h3 style="color:#a02020;">&#x1F985; CrowdStrike Falcon</h3>
+      </div>
+      <div class="ref-cmd"><code>sudo /opt/CrowdStrike/falconctl -g --cid</code><p>Check installed Customer ID</p></div>
+      <div class="ref-cmd"><code>sudo /opt/CrowdStrike/falconctl -g --aid</code><p>Check sensor Agent ID</p></div>
+      <div class="ref-cmd"><code>sudo systemctl status falcon-sensor</code><p>Check sensor service status</p></div>
+      <div class="ref-cmd"><code>sudo systemctl restart falcon-sensor</code><p>Restart Falcon sensor</p></div>
+    </div>
+
+    <!-- TENABLE NESSUS -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(74,124,244,0.06);">
+        <h3 style="color:#2a5cb4;">&#x1F6E1;&#xFE0F; Tenable Nessus Agent</h3>
+      </div>
+      <div class="ref-cmd"><code>sudo /opt/nessus_agent/sbin/nessuscli agent status</code><p>Check agent linked + last connect</p></div>
+      <div class="ref-cmd"><code>sudo systemctl status nessusagent</code><p>Check agent service</p></div>
+      <div class="ref-cmd"><code>sudo systemctl restart nessusagent</code><p>Restart Nessus agent</p></div>
+      <div class="ref-cmd"><code>sudo /opt/nessus_agent/sbin/nessuscli agent unlink</code><p>Unlink an agent</p></div>
+    </div>
+
+    <!-- LINUX BASICS -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(0,0,0,0.06);">
+        <h3 style="color:#0f1e35;">&#x1F427; Linux Basics</h3>
+      </div>
+      <div class="ref-cmd"><code>sudo dnf update -y</code><p>Update packages (Amazon Linux 2023)</p></div>
+      <div class="ref-cmd"><code>sudo systemctl status &lt;service&gt;</code><p>Check service status</p></div>
+      <div class="ref-cmd"><code>journalctl -u &lt;service&gt; -n 100</code><p>View last 100 log lines for a service</p></div>
+      <div class="ref-cmd"><code>top</code><p>View running processes</p></div>
+      <div class="ref-cmd"><code>df -h</code><p>Check disk space</p></div>
+    </div>
+
+    <!-- TC URLS -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(0,200,212,0.06);">
+        <h3 style="color:#00858f;">&#x1F517; TC Quick Links</h3>
+      </div>
+      <div class="ref-cmd"><code><a href="https://console.aws.amazon.com" target="_blank" style="color:inherit;text-decoration:underline;">console.aws.amazon.com</a></code><p>AWS Console</p></div>
+      <div class="ref-cmd"><code><a href="https://splunksiem.bluewave-redbird.com" target="_blank" style="color:inherit;text-decoration:underline;">splunksiem.bluewave-redbird.com</a></code><p>TC Splunk SIEM</p></div>
+      <div class="ref-cmd"><code><a href="https://falcon.crowdstrike.com" target="_blank" style="color:inherit;text-decoration:underline;">falcon.crowdstrike.com</a></code><p>CrowdStrike Falcon dashboard</p></div>
+      <div class="ref-cmd"><code><a href="https://cloud.tenable.com" target="_blank" style="color:inherit;text-decoration:underline;">cloud.tenable.com</a></code><p>Tenable (login via MSSP portal)</p></div>
+    </div>
+
+    <!-- KEYBOARD SHORTCUTS -->
+    <div class="ref-card">
+      <div class="ref-card-header" style="background:rgba(245,200,66,0.06);">
+        <h3 style="color:#9a7000;">&#x2328;&#xFE0F; Keyboard Shortcuts</h3>
+      </div>
+      <div class="ref-cmd"><code>Ctrl + C</code><p>Stop running command</p></div>
+      <div class="ref-cmd"><code>Ctrl + R</code><p>Search command history</p></div>
+      <div class="ref-cmd"><code>Ctrl + L</code><p>Clear terminal</p></div>
+      <div class="ref-cmd"><code>Tab</code><p>Auto-complete file/command names</p></div>
+      <div class="ref-cmd"><code>!!</code><p>Repeat last command</p></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="tool-view" id="view-learning">
+      <div class="tool-hdr"><div><h2>Learning Tracks</h2><p>Complete missions to earn badges and track your progress. Do them in any order!</p></div></div>
+
+      <div class="tracks-section-title">☁️ Foundational <span>— CyberLab environments</span></div>
+      <div class="tracks-overview">
+        <div class="tov-card" onclick="showMission('aws-mission')">
+          <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
+          <div class="tov-em">☁️</div>
+          <div class="tov-name">AWS / Cloud</div>
+          <div class="tov-pbar"><div class="tov-pfill" id="pbar-aws" style="width:0%;background:linear-gradient(90deg,#ff9900,#ffb84d);"></div></div>
+          <div class="tov-pct" id="ppct-aws">0% complete</div>
+        </div>
+      </div>
+
+      <div class="tracks-section-title">🛡️ Tools & Platforms <span>— TC CyberLab tools</span></div>
+      <div class="tracks-overview">
+        <div class="tov-card" onclick="showMission('splunk-mission')">
+          <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
+          <div class="tov-em">🔍</div>
+          <div class="tov-name">Splunk</div>
+          <div class="tov-pbar"><div class="tov-pfill" id="pbar-splunk" style="width:0%;background:linear-gradient(90deg,#00c896,#00a080);"></div></div>
+          <div class="tov-pct" id="ppct-splunk">0% complete</div>
+        </div>
+        <div class="tov-card" onclick="showMission('cs-mission')">
+          <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
+          <div class="tov-em">🦅</div>
+          <div class="tov-name">CrowdStrike</div>
+          <div class="tov-pbar"><div class="tov-pfill" id="pbar-cs" style="width:0%;background:linear-gradient(90deg,#e03030,#ff6060);"></div></div>
+          <div class="tov-pct" id="ppct-cs">0% complete</div>
+        </div>
+        <div class="tov-card" onclick="showMission('tenable-mission')">
+          <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
+          <div class="tov-em">🛡️</div>
+          <div class="tov-name">Tenable</div>
+          <div class="tov-pbar"><div class="tov-pfill" id="pbar-tenable" style="width:0%;background:linear-gradient(90deg,#4a7cf4,#7aaafa);"></div></div>
+          <div class="tov-pct" id="ppct-tenable">0% complete</div>
+        </div>
+      </div>
+
+      <!-- MISSION DETAIL CARDS -->
+      <div id="aws-mission" style="display:none;">
+        <div class="mission-card">
+          <div class="mission-header">
+            <div class="mission-icon" style="background:rgba(255,153,0,0.1);">☁️</div>
+            <div class="mission-info"><div class="mission-title">AWS / Cloud Fundamentals</div><div class="mission-sub">Complete all tasks to earn your badge</div></div>
+            <div class="mission-progress"><div class="mission-pct" id="mpct-aws">0%</div><div class="mission-pct-lbl">complete</div></div>
+          </div>
+          <div class="mission-bar"><div class="mission-bar-fill" id="mbar-aws" style="width:0%;background:linear-gradient(90deg,#ff9900,#ffb84d);"></div></div>
+          <div class="mission-tasks">
+            <div class="task-item" onclick="toggleTask(this,'aws',0)"><div class="task-check"></div><div class="task-label">Launch your EC2 instance (remon-test)</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'aws',1)"><div class="task-check"></div><div class="task-label">Connect via EC2 Instance Connect</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'aws',2)"><div class="task-check"></div><div class="task-label">Locate your instance's private IP</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'aws',3)"><div class="task-check"></div><div class="task-label">Stop your EC2 when not in use</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'aws',4)"><div class="task-check"></div><div class="task-label">Explore S3 and VPC in the console</div><span class="task-pts">+10 pts</span></div>
+          </div>
+          <div class="mission-badge"><div class="badge-locked" id="badge-aws">☁️</div><div class="badge-info"><h4>Cloud Ready Badge</h4><p>Complete all tasks to unlock</p></div></div>
+          <div class="next-track"><span class="next-track-txt">➡️ Next recommended: Splunk</span><button class="next-track-btn" onclick="showMission('splunk-mission')">Go to Splunk →</button></div>
+        </div>
+      </div>
+
+      <div id="splunk-mission" style="display:none;">
+        <div class="mission-card">
+          <div class="mission-header">
+            <div class="mission-icon" style="background:#0a0a0a;">🔍</div>
+            <div class="mission-info"><div class="mission-title">Splunk</div><div class="mission-sub">Complete all tasks to earn your badge</div></div>
+            <div class="mission-progress"><div class="mission-pct" id="mpct-splunk">0%</div><div class="mission-pct-lbl">complete</div></div>
+          </div>
+          <div class="mission-bar"><div class="mission-bar-fill" id="mbar-splunk" style="width:0%;background:linear-gradient(90deg,#00c896,#00a080);"></div></div>
+          <div class="mission-tasks">
+            <div class="task-item" onclick="toggleTask(this,'splunk',0)"><div class="task-check"></div><div class="task-label">Log in to Splunk SIEM (TC login)</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'splunk',1)"><div class="task-check"></div><div class="task-label">Install Splunk Universal Forwarder on EC2</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'splunk',2)"><div class="task-check"></div><div class="task-label">Configure log forwarding to TC SIEM</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'splunk',3)"><div class="task-check"></div><div class="task-label">Verify events are showing in Splunk</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'splunk',4)"><div class="task-check"></div><div class="task-label">Run your first search query</div><span class="task-pts">+10 pts</span></div>
+          </div>
+          <div class="mission-badge"><div class="badge-locked" id="badge-splunk">🔍</div><div class="badge-info"><h4>Splunk Setup Badge</h4><p>Complete all tasks to unlock</p></div></div>
+          <div class="next-track"><span class="next-track-txt">➡️ Next recommended: CrowdStrike</span><button class="next-track-btn" onclick="showMission('cs-mission')">Go to CrowdStrike →</button></div>
+        </div>
+      </div>
+
+      <div id="cs-mission" style="display:none;">
+        <div class="mission-card">
+          <div class="mission-header">
+            <div class="mission-icon" style="background:#1a1a1a;">🦅</div>
+            <div class="mission-info"><div class="mission-title">CrowdStrike Falcon</div><div class="mission-sub">Complete all tasks to earn your badge</div></div>
+            <div class="mission-progress"><div class="mission-pct" id="mpct-cs">0%</div><div class="mission-pct-lbl">complete</div></div>
+          </div>
+          <div class="mission-bar"><div class="mission-bar-fill" id="mbar-cs" style="width:0%;background:linear-gradient(90deg,#e03030,#ff6060);"></div></div>
+          <div class="mission-tasks">
+            <div class="task-item" onclick="toggleTask(this,'cs',0)"><div class="task-check"></div><div class="task-label">Access the Falcon dashboard</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'cs',1)"><div class="task-check"></div><div class="task-label">Install Falcon sensor on your EC2</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'cs',2)"><div class="task-check"></div><div class="task-label">Verify sensor is showing as healthy</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'cs',3)"><div class="task-check"></div><div class="task-label">Explore the detection dashboard</div><span class="task-pts">+10 pts</span></div>
+          </div>
+          <div class="mission-badge"><div class="badge-locked" id="badge-cs">🦅</div><div class="badge-info"><h4>Falcon Deploy Badge</h4><p>Complete all tasks to unlock</p></div></div>
+          <div class="next-track"><span class="next-track-txt">➡️ Next recommended: Tenable</span><button class="next-track-btn" onclick="showMission('tenable-mission')">Go to Tenable →</button></div>
+        </div>
+      </div>
+
+      <div id="tenable-mission" style="display:none;">
+        <div class="mission-card">
+          <div class="mission-header">
+            <div class="mission-icon" style="background:#fff;border:1px solid rgba(0,0,0,0.08);">🛡️</div>
+            <div class="mission-info"><div class="mission-title">Tenable</div><div class="mission-sub">Complete all tasks to earn your badge</div></div>
+            <div class="mission-progress"><div class="mission-pct" id="mpct-tenable">0%</div><div class="mission-pct-lbl">complete</div></div>
+          </div>
+          <div class="mission-bar"><div class="mission-bar-fill" id="mbar-tenable" style="width:0%;background:linear-gradient(90deg,#4a7cf4,#7aaafa);"></div></div>
+          <div class="mission-tasks">
+            <div class="task-item" onclick="toggleTask(this,'tenable',0)"><div class="task-check"></div><div class="task-label">Log in via MSSP portal (not cloud.tenable.com)</div><span class="task-pts">+10 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'tenable',1)"><div class="task-check"></div><div class="task-label">Install Nessus Agent on your EC2</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'tenable',2)"><div class="task-check"></div><div class="task-label">Run your first vulnerability scan</div><span class="task-pts">+20 pts</span></div>
+            <div class="task-item" onclick="toggleTask(this,'tenable',3)"><div class="task-check"></div><div class="task-label">Review scan results and findings</div><span class="task-pts">+10 pts</span></div>
+          </div>
+          <div class="mission-badge"><div class="badge-locked" id="badge-tenable">🛡️</div><div class="badge-info"><h4>First Scan Badge</h4><p>Complete all tasks to unlock</p></div></div>
+          <div class="next-track"><span class="next-track-txt">🎉 All tracks complete! Great job!</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- AI ASSISTANT -->
+<div class="ai-fab">
+  <div class="ai-panel" id="aiPanel">
+    <div class="ai-panel-header">
+      <h3>🤖 CyberLab AI Assistant</h3>
+      <button class="ai-close" onclick="toggleAI()">×</button>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="ai-msg bot">Hi! I'm your CyberLab AI assistant. Ask me anything about the tools, learning tracks, or getting started! 👋</div>
+    </div>
+    <div class="ai-suggestions">
+      <span class="ai-sug" onclick="askAI('How do I set up Splunk UF?')">How to set up Splunk UF?</span>
+      <span class="ai-sug" onclick="askAI('What is CrowdStrike Falcon?')">What is CrowdStrike?</span>
+      <span class="ai-sug" onclick="askAI('Where do I start as a new intern?')">Where do I start?</span>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendAI()">
+      <button class="ai-send" onclick="sendAI()">Send</button>
+    </div>
+  </div>
+  <button class="ai-btn" onclick="toggleAI()" title="AI Assistant">🤖</button>
+</div>
+
+<script>
+const titles={tools:'All Tools',aws:'AWS Suite',splunk:'Splunk SIEM',crowdstrike:'CrowdStrike Falcon',tenable:'Tenable',planner:'Labs / Projects Board',learning:'Learning Tracks',reference:'Quick Reference'};
+const taskState={aws:[false,false,false,false,false],splunk:[false,false,false,false,false],cs:[false,false,false,false],tenable:[false,false,false,false]};
+
+function startJourney(asGuest){
+  const errEl=document.getElementById('loginError');
+  if(errEl)errEl.style.display='none';
+  let name,role;
+  if(asGuest===true){
+    name='Guest';
+    role='guest';
+  } else {
+    const email=document.getElementById('emailInput').value.trim().toLowerCase();
+    if(!email){
+      if(errEl){errEl.textContent='Please enter your @trianglecyber.net email, or click Continue as Guest.';errEl.style.display='block';}
+      return;
+    }
+    if(!email.endsWith('@trianglecyber.net')){
+      if(errEl){errEl.textContent='Only @trianglecyber.net emails are allowed. Use Continue as Guest if you don\'t have one.';errEl.style.display='block';}
+      return;
+    }
+    if(ALLOWED_EMAILS.indexOf(email)===-1){
+      if(errEl){errEl.textContent='This email is not on the approved intern list. Contact your supervisor or use Continue as Guest.';errEl.style.display='block';}
+      return;
+    }
+    const typed=document.getElementById('nameInput').value.trim();
+    name=typed||email.split('@')[0];
+    role='intern';
+    localStorage.setItem('cyberlab_email',email);
+  }
+  const initials=name.split(/[\s.]+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sidebarName').textContent=name;
+  document.getElementById('sidebarAvatar').textContent=initials;
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  localStorage.setItem('cyberlab_name',name);
+  localStorage.setItem('cyberlab_role',role);
+  applyRoleRestrictions(role);
+}
+
+const ALLOWED_EMAILS=[
+  'remon.saweeris@trianglecyber.net',
+  'brendan.merritt@trianglecyber.net',
+  'ben.feldman@trianglecyber.net',
+  'fatemeh.dastak@trianglecyber.net',
+  'haylee.borden@trianglecyber.net',
+  'jeff.headley@trianglecyber.net',
+  'joseph.banks@trianglecyber.net',
+  'lawrence.baranski@trianglecyber.net',
+  'madjiguene.khoule@trianglecyber.net',
+  'markus.shelton@trianglecyber.net',
+  'michael.holzheimer@trianglecyber.net',
+  'michael.mckinney@trianglecyber.net',
+  'naithan.westcott@trianglecyber.net',
+  'samuel.corkhill@trianglecyber.net',
+  'test@trianglecyber.net',
+  'will.matthews@trianglecyber.net',
+  'jim.matthews@trianglecyber.net'
+];
+
+function applyRoleRestrictions(role){
+  document.body.classList.remove('role-guest','role-intern');
+  document.body.classList.add('role-'+(role||'intern'));
+  const interRole=document.querySelector('.intern-role');
+  if(interRole){interRole.textContent=(role==='guest')?'Guest':'CyberLab Intern';}
+}
+
+function signOut(){
+  localStorage.removeItem('cyberlab_name');
+  localStorage.removeItem('cyberlab_email');
+  localStorage.removeItem('cyberlab_role');
+  location.reload();
+}
+
+window.onload=function(){
+  const savedName=localStorage.getItem('cyberlab_name');
+  const savedRole=localStorage.getItem('cyberlab_role')||'intern';
+  if(savedName){
+    const initials=savedName.split(/[\s.]+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('sidebarName').textContent=savedName;
+    document.getElementById('sidebarAvatar').textContent=initials;
+    document.getElementById('welcomeOverlay').classList.add('hidden');
+    applyRoleRestrictions(savedRole);
+  }
+};
+
+function showTool(id,skipHistory){
+  const role=localStorage.getItem('cyberlab_role')||'intern';
+  if(role==='guest' && (id==='learning' || id==='planner')){
+    alert('This section is only available for Triangle Cyber interns. Click Sign Out and sign in with your @trianglecyber.net email to access.');
+    return;
+  }
+  document.querySelectorAll('.tool-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const v=document.getElementById('view-'+id);
+  if(v)v.classList.add('active');
+  const n=document.querySelector('.nav-item[onclick*="'+id+'"]');
+  if(n)n.classList.add('active');
+  document.getElementById('topbar-title').textContent=titles[id]||'CyberLab';
+  hideMissions();
+  if(!skipHistory){if(location.hash!=='#'+id){history.pushState({tool:id},'','#'+id);}}
+}
+window.addEventListener('popstate',function(e){const id=(location.hash||'#tools').substring(1);showTool(id,true);});
+window.addEventListener('load',function(){if(location.hash){const id=location.hash.substring(1);showTool(id,true);}});
+
+function hideMissions(){
+  ['aws-mission','splunk-mission','cs-mission','tenable-mission'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display='none';
+  });
+}
+
+function showMission(id){
+  hideMissions();
+  const el=document.getElementById(id);
+  if(el){el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+
+function toggleTask(el,track,idx){
+  taskState[track][idx]=!taskState[track][idx];
+  const check=el.querySelector('.task-check');
+  const label=el.querySelector('.task-label');
+  if(taskState[track][idx]){
+    check.classList.add('done');
+    el.classList.add('completed');
+  } else {
+    check.classList.remove('done');
+    el.classList.remove('completed');
+  }
+  updateProgress(track);
+}
+
+function updateProgress(track){
+  const tasks=taskState[track];
+  const done=tasks.filter(Boolean).length;
+  const total=tasks.length;
+  const pct=Math.round((done/total)*100);
+  const ovKey=track==='cs'?'cs':track;
+  if(document.getElementById('mpct-'+ovKey))document.getElementById('mpct-'+ovKey).textContent=pct+'%';
+  if(document.getElementById('mbar-'+ovKey))document.getElementById('mbar-'+ovKey).style.width=pct+'%';
+  const pbarKey=track==='cs'?'cs':track;
+  if(document.getElementById('pbar-'+pbarKey))document.getElementById('pbar-'+pbarKey).style.width=pct+'%';
+  if(document.getElementById('ppct-'+pbarKey))document.getElementById('ppct-'+pbarKey).textContent=pct+'% complete';
+  if(pct===100){
+    const badge=document.getElementById('badge-'+ovKey);
+    if(badge){badge.classList.remove('badge-locked');badge.classList.add('badge-earned');}
+  }
+}
+
+let aiOpen=false;
+function toggleAI(){
+  aiOpen=!aiOpen;
+  document.getElementById('aiPanel').classList.toggle('open',aiOpen);
+  if(aiOpen)document.getElementById('aiInput').focus();
+}
+
+function askAI(q){document.getElementById('aiInput').value=q;sendAI();}
+
+const QA_PAIRS=[
+  {keywords:['splunk','uf','universal forwarder','forwarder'],answer:'To set up Splunk Universal Forwarder on your EC2: 1) Download the .deb or .rpm package from splunk.com (version 10.2.3). 2) Install with sudo dpkg -i splunkforwarder-*.deb. 3) Configure deployment server pointing to TC Splunk. 4) Start the service and verify it appears in splunksiem.bluewave-redbird.com. Full guide is in the Splunk section.'},
+  {keywords:['crowdstrike','falcon','sensor','edr'],answer:'CrowdStrike Falcon is the endpoint detection tool. To install: 1) Get your Customer ID (CID) from Falcon console. 2) Launch an EC2 instance. 3) Download the sensor (falcon-sensor.rpm or .deb). 4) Install and register with sudo /opt/CrowdStrike/falconctl -s --cid=YOUR_CID. 5) Start service. Verify in Falcon console. Full guide in CrowdStrike section.'},
+  {keywords:['tenable','nessus','vulnerability','scan'],answer:'Tenable Nessus is for vulnerability management. Login through the MSSP portal (not directly via cloud.tenable.com). To install the Nessus Agent on EC2: use the curl-based cloud install script from Tenable. Agent should appear Online and Healthy. For Web App Scanning (WAS), launch scans from cloud.tenable.com. Full guide in Tenable section.'},
+  {keywords:['aws','ec2','instance','launch'],answer:'To launch an EC2 instance: 1) Go to console.aws.amazon.com. 2) Open EC2. 3) Launch Instance. 4) Pick Amazon Linux 2023 AMI. 5) Choose t2.micro for free tier. 6) Create or select a key pair. 7) Configure security group. 8) Launch. Always STOP your instance when not in use to avoid charges.'},
+  {keywords:['start','begin','new intern','first day','where','how do i start'],answer:'Welcome! Start here: 1) Read the Splunk, CrowdStrike, and Tenable setup guides in their respective sidebar sections. 2) Get your AWS account access from your supervisor. 3) Launch a test EC2 instance. 4) Install the Splunk Universal Forwarder, CrowdStrike Falcon Sensor, and Tenable Nessus Agent. 5) Verify each appears in its respective console. Always stop EC2 instances when done.'},
+  {keywords:['siem','log','splunksiem'],answer:'TC SIEM is at splunksiem.bluewave-redbird.com — use your TC SIEM login (separate from splunk.com). Logs from your EC2 are forwarded here via the Universal Forwarder.'},
+  {keywords:['ssh','connect','login to ec2','putty'],answer:'To connect to your EC2: use EC2 Instance Connect from the AWS console (easiest), or SSH from your terminal with: ssh -i your-key.pem ec2-user@your-ec2-public-ip. Make sure your security group allows SSH (port 22) from your IP only.'},
+  {keywords:['cost','price','money','bill','charge'],answer:'Always STOP EC2 instances when not in use — running instances cost money even if idle. Use t2.micro or t3.micro (free tier eligible). Check your billing dashboard regularly. Other things that cost money: EBS volumes (even on stopped instances), Elastic IPs not attached, NAT gateways, and snapshots.'},
+  {keywords:['mfa','password','login','authentication'],answer:'Set up MFA on your AWS account immediately. Use an authenticator app like Google Authenticator or Authy. Never share credentials. For Tenable, login goes through the MSSP portal with SSO/SAML, not direct username/password.'},
+  {keywords:['badge','earn','progress','mission'],answer:'Complete missions in the Learning Tracks section to earn badges. Each guide you complete and each tool you successfully set up unlocks progress. Visit Learning Tracks in the sidebar.'},
+  {keywords:['help','support','stuck','question'],answer:'For technical questions, check the relevant guide in the sidebar (AWS, Splunk, CrowdStrike, Tenable). For account issues, contact Will Matthews. Ask in the TC AWS IT/CyberLab Team chat for anything urgent.'},
+  {keywords:['hello','hi','hey','sup'],answer:'Hi! I\'m the CyberLab assistant. I can answer questions about Splunk UF, CrowdStrike Falcon, Tenable, AWS EC2 setup, and how to get started. What would you like to know?'},
+  {keywords:['what','tool','cyberlab','about'],answer:'CyberLab is Triangle Cyber\'s intern learning hub. It centralizes setup guides for the tools you\'ll use: Splunk SIEM, CrowdStrike Falcon, Tenable Nessus, and AWS. Pick any tool from the sidebar to see the dashboard and setup guide.'}
+];
+
+function findBestAnswer(question){
+  const q=question.toLowerCase();
+  let best=null,bestScore=0;
+  for(const pair of QA_PAIRS){
+    let score=0;
+    for(const kw of pair.keywords){
+      if(q.includes(kw))score+=kw.length;
+    }
+    if(score>bestScore){bestScore=score;best=pair;}
+  }
+  if(bestScore>0)return best.answer;
+  return null;
+}
+
+function sendAI(){
+  const inputEl=document.getElementById('aiInput');
+  if(!inputEl)return;
+  const q=inputEl.value.trim();
+  if(!q)return;
+  const msgs=document.getElementById('aiMessages');
+  msgs.innerHTML+=`<div class="ai-msg user">${q.replace(/</g,'&lt;')}</div>`;
+  inputEl.value='';
+  msgs.innerHTML+=`<div class="ai-msg bot typing">Thinking...</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(function(){
+    const typing=msgs.querySelector('.typing');
+    if(typing)typing.remove();
+    const ans=findBestAnswer(q);
+    const reply=ans||'I don\'t have a prepared answer for that yet. Try asking about Splunk UF, CrowdStrike, Tenable, AWS EC2, or how to get started as a new intern.';
+    msgs.innerHTML+=`<div class="ai-msg bot">${reply.replace(/\n/g,'<br>')}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },400);
+}
+
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const isDark=document.body.classList.contains('dark');
+  document.getElementById('darkBtn').textContent=isDark?'☀️ Light':'🌙 Dark';
+  localStorage.setItem('cyberlab_dark',isDark);
+}
+
+// Restore dark mode preference
+if(localStorage.getItem('cyberlab_dark')==='true'){
+  document.body.classList.add('dark');
+  document.addEventListener('DOMContentLoaded',()=>{
+    const btn=document.getElementById('darkBtn');
+    if(btn)btn.textContent='☀️ Light';
+  });
+}
+
+// LIVE NEWS TICKER (clickable headlines)
+(function loadLiveNews(){
+  const target=document.getElementById('newsContent');
+  if(!target)return;
+  const fallback=[
+    {title:'Welcome to Triangle Cyber CyberLab',link:'#'},
+    {title:'Always stop EC2 instances when not in use',link:'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html'},
+    {title:'Login to Tenable via the MSSP portal',link:'https://cloud.tenable.com'},
+    {title:'CrowdStrike Falcon protects your endpoints',link:'https://www.crowdstrike.com/products/endpoint-security/falcon-prevent-antivirus/'},
+    {title:'Check Quick Reference for handy commands',link:'#'}
+  ];
+  function renderNews(items){
+    const html=items.map(it=>`<a href="${it.link||'#'}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;font-weight:500;">${(it.title||'').replace(/</g,'&lt;')}</a>`).join('<span style="margin:0 14px;color:#bbb;">·</span>');
+    target.innerHTML=html+'<span style="margin:0 14px;color:#bbb;">·</span>'+html;
+  }
+  const rssUrl='https://feeds.feedburner.com/TheHackersNews';
+  const api='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl);
+  fetch(api).then(r=>r.json()).then(data=>{
+    if(data && data.status==='ok' && data.items && data.items.length){
+      renderNews(data.items.slice(0,8).map(it=>({title:it.title,link:it.link})));
+    } else {
+      renderNews(fallback);
+    }
+  }).catch(()=>{renderNews(fallback);});
+  setTimeout(loadLiveNews,600000);
+})();
+</script>
+</body>
+</html
