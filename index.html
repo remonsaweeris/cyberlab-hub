@@ -421,10 +421,6 @@ body.dark .mission-card { background: #131f30 !important; }
           <div class="acard-info"><h4>AWS Suite</h4></div>
           <button onclick="showTool('aws')" class="abtn" style="background:#ff9900;color:#0a0a0a;">Open →</button>
         </div>
-        <div class="acard" style="border-left-color:#00c896;">
-          <div class="acard-info"><h4>Splunk SIEM</h4></div>
-          <button onclick="showTool('splunk')" class="abtn" style="background:#00c896;color:#0a0a0a;">Open →</button>
-        </div>
         <div class="acard" style="border-left-color:#e03030;">
           <div class="acard-info"><h4>CrowdStrike Falcon</h4></div>
           <button onclick="showTool('crowdstrike')" class="abtn" style="background:#e03030;color:#fff;">Open →</button>
@@ -448,17 +444,6 @@ body.dark .mission-card { background: #131f30 !important; }
       </div>
     </div>
 
-    <!-- SPLUNK -->
-    <div class="tool-view" id="view-splunk">
-      <div class="tool-hdr">
-        <div class="tool-ico" style="background:#0a0a0a;"><img src="data:image/png;base64,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" alt="Splunk"></div>
-        <div><h2>Splunk SIEM <span class="badge" style="background:rgba(0,200,150,0.1);color:#007a60;border:1px solid rgba(0,200,150,0.3);">SIEM</span></h2><p>TC's centralized log aggregation platform. Use your TC SIEM login — separate from Splunk.com.</p></div>
-      </div>
-      <div class="grid">
-        <div class="acard" style="border-left-color:#00c896;"><div class="acard-info"><h4>Splunk SIEM</h4><p>splunksiem.bluewave-redbird.com</p></div><a href="https://splunksiem.bluewave-redbird.com" target="_blank" class="abtn" style="background:#00c896;color:#0a0a0a;">Open →</a></div>
-        <div class="acard" style="border-left-color:#00c896;"><div class="acard-info"><h4>Splunk UF Setup Guide</h4><p>Universal Forwarder guide · .docx</p></div><a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/remonsaweeris/cyberlab-hub/main/Splunk_Setup_Guide.docx&embedded=true" target="_blank" class="abtn guide-download-link" style="background:#00c896;color:#0a0a0a;margin-right:6px;">👁️ View</a><a href="Splunk_Setup_Guide.docx" class="abtn abtn-muted guide-download-link">📥 Download</a><span class="guide-locked-msg">&#x1F512; Sign in with TC email to access</span></div>
-      </div>
-    </div>
 
     <!-- CROWDSTRIKE -->
     <div class="tool-view" id="view-crowdstrike">
@@ -559,17 +544,6 @@ body.dark .mission-card { background: #131f30 !important; }
       <div class="ref-cmd"><code>scp -i key.pem file.txt ec2-user@ip:~/</code><p>Copy file to remote EC2</p></div>
     </div>
 
-    <!-- SPLUNK SEARCH -->
-    <div class="ref-card">
-      <div class="ref-card-header" style="background:rgba(0,200,150,0.06);">
-        <h3 style="color:#00a080;">&#x1F4CA; Splunk Search</h3>
-      </div>
-      <div class="ref-cmd"><code>index=main | head 20</code><p>Show first 20 events</p></div>
-      <div class="ref-cmd"><code>index=main host=apache-1</code><p>Filter by host</p></div>
-      <div class="ref-cmd"><code>index=* sourcetype=linux_secure failed</code><p>Find failed Linux logins</p></div>
-      <div class="ref-cmd"><code>| stats count by host</code><p>Count events grouped by host</p></div>
-      <div class="ref-cmd"><code>earliest=-24h@h</code><p>Filter to last 24 hours</p></div>
-    </div>
 
     <!-- CROWDSTRIKE -->
     <div class="ref-card">
@@ -611,7 +585,6 @@ body.dark .mission-card { background: #131f30 !important; }
         <h3 style="color:#00858f;">&#x1F517; TC Quick Links</h3>
       </div>
       <div class="ref-cmd"><code><a href="https://console.aws.amazon.com" target="_blank" style="color:inherit;text-decoration:underline;">console.aws.amazon.com</a></code><p>AWS Console</p></div>
-      <div class="ref-cmd"><code><a href="https://splunksiem.bluewave-redbird.com" target="_blank" style="color:inherit;text-decoration:underline;">splunksiem.bluewave-redbird.com</a></code><p>TC Splunk SIEM</p></div>
       <div class="ref-cmd"><code><a href="https://falcon.crowdstrike.com" target="_blank" style="color:inherit;text-decoration:underline;">falcon.crowdstrike.com</a></code><p>CrowdStrike Falcon dashboard</p></div>
       <div class="ref-cmd"><code><a href="https://cloud.tenable.com" target="_blank" style="color:inherit;text-decoration:underline;">cloud.tenable.com</a></code><p>Tenable (login via MSSP portal)</p></div>
     </div>
@@ -647,13 +620,6 @@ body.dark .mission-card { background: #131f30 !important; }
 
       <div class="tracks-section-title">🛡️ Tools & Platforms <span>— TC CyberLab tools</span></div>
       <div class="tracks-overview">
-        <div class="tov-card" onclick="showMission('splunk-mission')">
-          <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
-          <div class="tov-em">🔍</div>
-          <div class="tov-name">Splunk</div>
-          <div class="tov-pbar"><div class="tov-pfill" id="pbar-splunk" style="width:0%;background:linear-gradient(90deg,#00c896,#00a080);"></div></div>
-          <div class="tov-pct" id="ppct-splunk">0% complete</div>
-        </div>
         <div class="tov-card" onclick="showMission('cs-mission')">
           <div class="tov-status" style="background:rgba(0,160,120,0.1);color:#007a60;border:1px solid rgba(0,160,120,0.2);">Available</div>
           <div class="tov-em">🦅</div>
@@ -687,29 +653,10 @@ body.dark .mission-card { background: #131f30 !important; }
             <div class="task-item" onclick="toggleTask(this,'aws',4)"><div class="task-check"></div><div class="task-label">Explore S3 and VPC in the console</div><span class="task-pts">+10 pts</span></div>
           </div>
           <div class="mission-badge"><div class="badge-locked" id="badge-aws">☁️</div><div class="badge-info"><h4>Cloud Ready Badge</h4><p>Complete all tasks to unlock</p></div></div>
-          <div class="next-track"><span class="next-track-txt">➡️ Next recommended: Splunk</span><button class="next-track-btn" onclick="showMission('splunk-mission')">Go to Splunk →</button></div>
-        </div>
-      </div>
-
-      <div id="splunk-mission" style="display:none;">
-        <div class="mission-card">
-          <div class="mission-header">
-            <div class="mission-icon" style="background:#0a0a0a;">🔍</div>
-            <div class="mission-info"><div class="mission-title">Splunk</div><div class="mission-sub">Complete all tasks to earn your badge</div></div>
-            <div class="mission-progress"><div class="mission-pct" id="mpct-splunk">0%</div><div class="mission-pct-lbl">complete</div></div>
-          </div>
-          <div class="mission-bar"><div class="mission-bar-fill" id="mbar-splunk" style="width:0%;background:linear-gradient(90deg,#00c896,#00a080);"></div></div>
-          <div class="mission-tasks">
-            <div class="task-item" onclick="toggleTask(this,'splunk',0)"><div class="task-check"></div><div class="task-label">Log in to Splunk SIEM (TC login)</div><span class="task-pts">+10 pts</span></div>
-            <div class="task-item" onclick="toggleTask(this,'splunk',1)"><div class="task-check"></div><div class="task-label">Install Splunk Universal Forwarder on EC2</div><span class="task-pts">+20 pts</span></div>
-            <div class="task-item" onclick="toggleTask(this,'splunk',2)"><div class="task-check"></div><div class="task-label">Configure log forwarding to TC SIEM</div><span class="task-pts">+20 pts</span></div>
-            <div class="task-item" onclick="toggleTask(this,'splunk',3)"><div class="task-check"></div><div class="task-label">Verify events are showing in Splunk</div><span class="task-pts">+20 pts</span></div>
-            <div class="task-item" onclick="toggleTask(this,'splunk',4)"><div class="task-check"></div><div class="task-label">Run your first search query</div><span class="task-pts">+10 pts</span></div>
-          </div>
-          <div class="mission-badge"><div class="badge-locked" id="badge-splunk">🔍</div><div class="badge-info"><h4>Splunk Setup Badge</h4><p>Complete all tasks to unlock</p></div></div>
           <div class="next-track"><span class="next-track-txt">➡️ Next recommended: CrowdStrike</span><button class="next-track-btn" onclick="showMission('cs-mission')">Go to CrowdStrike →</button></div>
         </div>
       </div>
+
 
       <div id="cs-mission" style="display:none;">
         <div class="mission-card">
@@ -800,13 +747,6 @@ body.dark .mission-card { background: #131f30 !important; }
       <div style="font-size:11px;color:#8a9ab0;margin-top:4px;">Stephane Maarek · 27.5 hrs</div>
       <div style="font-size:10px;font-weight:600;color:#ff9900;margin-top:8px;">Start course →</div>
     </a>
-    <a href="https://trianglecyber.udemy.com/courses/search/?q=splunk" target="_blank" class="tov-card" style="text-decoration:none;">
-      <div class="tov-status" style="background:rgba(0,200,150,0.1);color:#007a60;border:1px solid rgba(0,200,150,0.2);">★ 4.5 · Beginner</div>
-      <div class="tov-em">🔍</div>
-      <div class="tov-name">Splunk: Zero to Power User</div>
-      <div style="font-size:11px;color:#8a9ab0;margin-top:4px;">Various Instructors · 14 hrs</div>
-      <div style="font-size:10px;font-weight:600;color:#00c896;margin-top:8px;">Start course →</div>
-    </a>
     <a href="https://trianglecyber.udemy.com/courses/search/?q=comptia+security+plus" target="_blank" class="tov-card" style="text-decoration:none;">
       <div class="tov-status" style="background:rgba(167,139,250,0.1);color:#6d28d9;border:1px solid rgba(167,139,250,0.25);">★ 4.8 · Beginner</div>
       <div class="tov-em">🏅</div>
@@ -835,7 +775,6 @@ body.dark .mission-card { background: #131f30 !important; }
       <div class="ai-msg bot">Hi! I'm your CyberLab AI assistant. Ask me anything about the tools, learning tracks, or getting started! 👋</div>
     </div>
     <div class="ai-suggestions">
-      <span class="ai-sug" onclick="askAI('How do I set up Splunk UF?')">How to set up Splunk UF?</span>
       <span class="ai-sug" onclick="askAI('What is CrowdStrike Falcon?')">What is CrowdStrike?</span>
       <span class="ai-sug" onclick="askAI('Where do I start as a new intern?')">Where do I start?</span>
     </div>
@@ -848,8 +787,8 @@ body.dark .mission-card { background: #131f30 !important; }
 </div>
 
 <script>
-const titles={tools:'All Tools',aws:'AWS Suite',splunk:'Splunk SIEM',crowdstrike:'CrowdStrike Falcon',tenable:'Tenable',planner:'Labs / Projects Board',learning:'Learning Tracks',reference:'Quick Reference',udemy:'Udemy for Business'};
-const taskState={aws:[false,false,false,false,false],splunk:[false,false,false,false,false],cs:[false,false,false,false],tenable:[false,false,false,false]};
+const titles={tools:'All Tools',aws:'AWS Suite',crowdstrike:'CrowdStrike Falcon',tenable:'Tenable',planner:'Labs / Projects Board',learning:'Learning Tracks',reference:'Quick Reference',udemy:'Udemy for Business'};
+const taskState={aws:[false,false,false,false,false],cs:[false,false,false,false],tenable:[false,false,false,false]};
 
 function startJourney(asGuest){
   const errEl=document.getElementById('loginError');
@@ -975,7 +914,7 @@ window.addEventListener('popstate',function(e){const id=(location.hash||'#tools'
 window.addEventListener('load',function(){if(location.hash){const id=location.hash.substring(1);showTool(id,true);}});
 
 function hideMissions(){
-  ['aws-mission','splunk-mission','cs-mission','tenable-mission'].forEach(id=>{
+  ['aws-mission','cs-mission','tenable-mission'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.style.display='none';
   });
@@ -1028,19 +967,17 @@ function toggleAI(){
 function askAI(q){document.getElementById('aiInput').value=q;sendAI();}
 
 const QA_PAIRS=[
-  {keywords:['splunk','uf','universal forwarder','forwarder'],answer:'To set up Splunk Universal Forwarder on your EC2: 1) Download the .deb or .rpm package from splunk.com (version 10.2.3). 2) Install with sudo dpkg -i splunkforwarder-*.deb. 3) Configure deployment server pointing to TC Splunk. 4) Start the service and verify it appears in splunksiem.bluewave-redbird.com. Full guide is in the Splunk section.'},
   {keywords:['crowdstrike','falcon','sensor','edr'],answer:'CrowdStrike Falcon is the endpoint detection tool. To install: 1) Get your Customer ID (CID) from Falcon console. 2) Launch an EC2 instance. 3) Download the sensor (falcon-sensor.rpm or .deb). 4) Install and register with sudo /opt/CrowdStrike/falconctl -s --cid=YOUR_CID. 5) Start service. Verify in Falcon console. Full guide in CrowdStrike section.'},
   {keywords:['tenable','nessus','vulnerability','scan'],answer:'Tenable Nessus is for vulnerability management. Login through the MSSP portal (not directly via cloud.tenable.com). To install the Nessus Agent on EC2: use the curl-based cloud install script from Tenable. Agent should appear Online and Healthy. For Web App Scanning (WAS), launch scans from cloud.tenable.com. Full guide in Tenable section.'},
   {keywords:['aws','ec2','instance','launch'],answer:'To launch an EC2 instance: 1) Go to console.aws.amazon.com. 2) Open EC2. 3) Launch Instance. 4) Pick Amazon Linux 2023 AMI. 5) Choose t2.micro for free tier. 6) Create or select a key pair. 7) Configure security group. 8) Launch. Always STOP your instance when not in use to avoid charges.'},
-  {keywords:['start','begin','new intern','first day','where','how do i start'],answer:'Welcome! Start here: 1) Read the Splunk, CrowdStrike, and Tenable setup guides in their respective sidebar sections. 2) Get your AWS account access from your supervisor. 3) Launch a test EC2 instance. 4) Install the Splunk Universal Forwarder, CrowdStrike Falcon Sensor, and Tenable Nessus Agent. 5) Verify each appears in its respective console. Always stop EC2 instances when done.'},
-  {keywords:['siem','log','splunksiem'],answer:'TC SIEM is at splunksiem.bluewave-redbird.com — use your TC SIEM login (separate from splunk.com). Logs from your EC2 are forwarded here via the Universal Forwarder.'},
+  {keywords:['start','begin','new intern','first day','where','how do i start'],answer:'Welcome! Start here: 1) Read the AWS, CrowdStrike, and Tenable setup guides in their respective sidebar sections. 2) Get your AWS account access from your supervisor. 3) Launch a test EC2 instance. 4) Install the CrowdStrike Falcon Sensor and Tenable Nessus Agent. 5) Verify each appears in its respective console. Always stop EC2 instances when done.'},
   {keywords:['ssh','connect','login to ec2','putty'],answer:'To connect to your EC2: use EC2 Instance Connect from the AWS console (easiest), or SSH from your terminal with: ssh -i your-key.pem ec2-user@your-ec2-public-ip. Make sure your security group allows SSH (port 22) from your IP only.'},
   {keywords:['cost','price','money','bill','charge'],answer:'Always STOP EC2 instances when not in use — running instances cost money even if idle. Use t2.micro or t3.micro (free tier eligible). Check your billing dashboard regularly. Other things that cost money: EBS volumes (even on stopped instances), Elastic IPs not attached, NAT gateways, and snapshots.'},
   {keywords:['mfa','password','login','authentication'],answer:'Set up MFA on your AWS account immediately. Use an authenticator app like Google Authenticator or Authy. Never share credentials. For Tenable, login goes through the MSSP portal with SSO/SAML, not direct username/password.'},
   {keywords:['badge','earn','progress','mission'],answer:'Complete missions in the Learning Tracks section to earn badges. Each guide you complete and each tool you successfully set up unlocks progress. Visit Learning Tracks in the sidebar.'},
-  {keywords:['help','support','stuck','question'],answer:'For technical questions, check the relevant guide in the sidebar (AWS, Splunk, CrowdStrike, Tenable). For account issues, contact Will Matthews. Ask in the TC AWS IT/CyberLab Team chat for anything urgent.'},
-  {keywords:['hello','hi','hey','sup'],answer:'Hi! I\'m the CyberLab assistant. I can answer questions about Splunk UF, CrowdStrike Falcon, Tenable, AWS EC2 setup, and how to get started. What would you like to know?'},
-  {keywords:['what','tool','cyberlab','about'],answer:'CyberLab is Triangle Cyber\'s intern learning hub. It centralizes setup guides for the tools you\'ll use: Splunk SIEM, CrowdStrike Falcon, Tenable Nessus, and AWS. Pick any tool from the sidebar to see the dashboard and setup guide.'}
+  {keywords:['help','support','stuck','question'],answer:'For technical questions, check the relevant guide in the sidebar (AWS, CrowdStrike, Tenable). For account issues, contact Will Matthews. Ask in the TC AWS IT/CyberLab Team chat for anything urgent.'},
+  {keywords:['hello','hi','hey','sup'],answer:'Hi! I\'m the CyberLab assistant. I can answer questions about CrowdStrike Falcon, Tenable, AWS EC2 setup, and how to get started. What would you like to know?'},
+  {keywords:['what','tool','cyberlab','about'],answer:'CyberLab is Triangle Cyber\'s intern learning hub. It centralizes setup guides for the tools you\'ll use: CrowdStrike Falcon, Tenable Nessus, and AWS. Pick any tool from the sidebar to see the dashboard and setup guide.'}
 ];
 
 function findBestAnswer(question){
@@ -1071,7 +1008,7 @@ function sendAI(){
     const typing=msgs.querySelector('.typing');
     if(typing)typing.remove();
     const ans=findBestAnswer(q);
-    const reply=ans||'I don\'t have a prepared answer for that yet. Try asking about Splunk UF, CrowdStrike, Tenable, AWS EC2, or how to get started as a new intern.';
+    const reply=ans||'I don\'t have a prepared answer for that yet. Try asking about CrowdStrike, Tenable, AWS EC2, or how to get started as a new intern.';
     msgs.innerHTML+=`<div class="ai-msg bot">${reply.replace(/\n/g,'<br>')}</div>`;
     msgs.scrollTop=msgs.scrollHeight;
   },400);
@@ -1089,8 +1026,7 @@ const DEFAULT_PLANNER_DATA = {
   'remon.saweeris@trianglecyber.net': {
     inProgress: [
       {title:'CyberLab Hub Website', pct:75, desc:'Live intern hub deployed on AWS Amplify with embedded setup guides.', next:'Triangle Cyber logo, AI chatbot'},
-      {title:'EC2 Lab Environment', pct:90, desc:'remon-test instance with CrowdStrike Falcon + Tenable Nessus + Splunk UF installed.', next:'Verify all sensors reporting'},
-      {title:'Splunk UF Documentation', pct:85, desc:'Universal Forwarder setup guide for TC EC2 instances (v10.2.3).', next:'Final review with Will'}
+      {title:'EC2 Lab Environment', pct:90, desc:'remon-test instance with CrowdStrike Falcon + Tenable Nessus installed.', next:'Verify all sensors reporting'}
     ],
     upNext: [
       {title:'AWS EC2 Setup Guide', desc:'Dedicated guide for spinning up EC2 instances on AWS for new interns.', note:'Target: This sprint'},
@@ -1356,27 +1292,23 @@ if(localStorage.getItem('cyberlab_dark')==='true'){
 // UNIVERSAL SEARCH
 const SEARCH_INDEX=[
   {category:'Tool',title:'AWS Suite',snippet:'EC2, S3, VPC, Lambda. Launch and manage cloud infrastructure.',tool:'aws'},
-  {category:'Tool',title:'Splunk SIEM',snippet:'TC centralized log aggregation platform.',tool:'splunk'},
   {category:'Tool',title:'CrowdStrike Falcon',snippet:'Endpoint Detection & Response. Install Falcon sensor on EC2.',tool:'crowdstrike'},
   {category:'Tool',title:'Tenable',snippet:'Vulnerability scanning and management. Login via MSSP portal.',tool:'tenable'},
   {category:'Guide',title:'AWS EC2 Setup Guide',snippet:'Step-by-step guide for launching EC2 instances.',tool:'aws'},
-  {category:'Guide',title:'Splunk UF Setup Guide',snippet:'Universal Forwarder setup for TC EC2 instances v10.2.3.',tool:'splunk'},
   {category:'Guide',title:'CrowdStrike Falcon Setup Guide',snippet:'Sensor installation guide for AWS EC2.',tool:'crowdstrike'},
   {category:'Guide',title:'Tenable Setup Guide',snippet:'Vulnerability management setup via MSSP portal.',tool:'tenable'},
   {category:'Reference',title:'AWS CLI Commands',snippet:'aws ec2 describe-instances, stop-instances, start-instances, S3 commands.',tool:'reference'},
   {category:'Reference',title:'SSH & EC2 Connect',snippet:'SSH commands, key permissions, SCP file transfer.',tool:'reference'},
-  {category:'Reference',title:'Splunk Search Queries',snippet:'index=main, host filter, stats count, earliest time filter.',tool:'reference'},
   {category:'Reference',title:'CrowdStrike Commands',snippet:'falconctl, sensor status, systemctl restart falcon-sensor.',tool:'reference'},
   {category:'Reference',title:'Tenable Nessus Commands',snippet:'nessuscli agent status, systemctl restart nessusagent.',tool:'reference'},
   {category:'Reference',title:'Linux Basics',snippet:'dnf update, systemctl, journalctl, top, df commands.',tool:'reference'},
   {category:'Reference',title:'Keyboard Shortcuts',snippet:'Ctrl+C stop, Ctrl+R history search, Tab autocomplete.',tool:'reference'},
-  {category:'Reference',title:'TC Quick Links',snippet:'AWS Console, Splunk SIEM, Falcon, Tenable URLs.',tool:'reference'},
+  {category:'Reference',title:'TC Quick Links',snippet:'AWS Console, Falcon, Tenable URLs.',tool:'reference'},
   {category:'Section',title:'All Tools',snippet:'Main dashboard with all TC tools.',tool:'tools'},
   {category:'Section',title:'Current Sprint',snippet:'Your active projects, tasks in progress, up next.',tool:'planner'},
   {category:'Section',title:'Quick Reference',snippet:'Cheat sheet of commands and shortcuts.',tool:'reference'},
   {category:'Section',title:'Learning Tracks',snippet:'Earn badges by completing missions.',tool:'learning'},
   {category:'Q&A',title:'How do I start as a new intern?',snippet:'Read guides, get AWS access, launch test EC2, install sensors.',tool:'tools'},
-  {category:'Q&A',title:'How do I set up Splunk UF?',snippet:'Download package, install, configure deployment server.',tool:'splunk'},
   {category:'Q&A',title:'How do I launch an EC2 instance?',snippet:'AWS Console, EC2, Launch Instance, choose Amazon Linux 2023.',tool:'aws'},
   {category:'Q&A',title:'How to save AWS costs?',snippet:'STOP EC2 instances when not in use. Use t2/t3.micro free tier.',tool:'aws'},
   {category:'Q&A',title:'MFA and authentication',snippet:'Set up MFA on AWS. Tenable uses SSO via MSSP portal.',tool:'tenable'}
@@ -1388,7 +1320,7 @@ const SEARCH_INDEX=[
   if(!input||!results)return;
   function render(matches){
     if(matches.length===0){
-      results.innerHTML='<div class="search-no-results">No results. Try AWS, Splunk, MFA, EC2, or guides.</div>';
+      results.innerHTML='<div class="search-no-results">No results. Try AWS, CrowdStrike, Tenable, MFA, EC2, or guides.</div>';
     } else {
       results.innerHTML=matches.slice(0,10).map(m=>`<div class="search-result-item" data-tool="${m.tool}"><div class="search-result-title"><span class="search-result-category">${m.category}</span>${m.title}</div><div class="search-result-snippet">${m.snippet}</div></div>`).join('');
     }
@@ -1431,7 +1363,7 @@ const SEARCH_INDEX=[
     <p style="font-size:12px;color:#5a7090;margin-bottom:20px;">Adding to: <strong id="modal-intern-label"></strong></p>
     <div style="margin-bottom:14px;">
       <label style="font-size:12px;font-weight:600;color:#0f1e35;display:block;margin-bottom:5px;">Project Title *</label>
-      <input id="proj-title" type="text" placeholder="e.g. Splunk UF Setup" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid rgba(0,0,0,0.12);font-size:13px;font-family:Inter,sans-serif;outline:none;"/>
+      <input id="proj-title" type="text" placeholder="e.g. Tenable Agent Setup" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid rgba(0,0,0,0.12);font-size:13px;font-family:Inter,sans-serif;outline:none;"/>
     </div>
     <div style="margin-bottom:14px;">
       <label style="font-size:12px;font-weight:600;color:#0f1e35;display:block;margin-bottom:5px;">Description</label>
